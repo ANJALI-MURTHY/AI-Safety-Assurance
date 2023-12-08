@@ -4,14 +4,6 @@
 
 NEUROCOP
 
-**Group Members:**
-
-Anjali Maddila - G01381846
-
-Kavya Tolety - G01378070 
-
-Anjali Jayadeva Murthy - G01373209
-
 **Project**
 
 **Algorithm Description**
@@ -24,57 +16,57 @@ Anjali Jayadeva Murthy - G01373209
 
 **BaB Pseudocode**
 
-- **A search strategy,** defined by the pick\_out function, which chooses the next problem to branch on
+- **A search strategy,** defined by the pick_out function, which chooses the next problem to branch on
 
-- **A branching rule**, defined by the split function, which takes a problem prob and returns its partition into subproblems such that Ui subprob\_i = prob and that (subprob\_i ∩ subprob\_j) = ∅, ∀i ̸= j.
+- **A branching rule**, defined by the split function, which takes a problem prob and returns its partition into subproblems such that Ui subprob_i = prob and that (subprob_i ∩ subprob_j) = ∅, ∀i ̸= j.
 
-- **Bounding methods**, defined by the compute\_{UB,LB} functions. 
+- **Bounding methods**, defined by the compute\_{UB,LB} functions.
 
-These procedures estimate respectively upper bounds (prob\_ub) and lower bounds (prob\_ub) over the minimum output that the network net can reach over a given (sub-)problem.
+These procedures estimate respectively upper bounds (prob_ub) and lower bounds (prob_ub) over the minimum output that the network net can reach over a given (sub-)problem.
 
 **Algorithm 1 Branch and Bound**
 
 1: function BaB(net, problem, )
 
-2: global\_ub ← inf
+2: global_ub ← inf
 
-3: global\_lb ← − inf
+3: global_lb ← − inf
 
-4: probs ← \[(global\_lb, problem)]
+4: probs ← \[(global_lb, problem)]
 
-5: while global\_ub − global\_lb >  do
+5: while global_ub − global_lb >  do
 
-6: (\_ , prob) ← pick\_out(probs)
+6: (\_ , prob) ← pick_out(probs)
 
-7: \[subprob\_1, . . . , subprob\_s] ← split(prob)
+7: \[subprob_1, . . . , subprob_s] ← split(prob)
 
 8: for i = 1 . . . s do
 
-9: prob\_ub ← compute\_UB(net, subprob\_i)
+9: prob_ub ← compute_UB(net, subprob_i)
 
-10: prob\_lb ← compute\_LB(net, subprob\_i)
+10: prob_lb ← compute_LB(net, subprob_i)
 
-11: if prob\_ub < global\_ub then
+11: if prob_ub < global_ub then
 
-12: global\_ub ← prob\_ub
+12: global_ub ← prob_ub
 
-13: prune\_problems(probs, global\_ub)
+13: prune_problems(probs, global_ub)
 
 14: end if
 
-15: if prob\_lb < global\_ub then
+15: if prob_lb < global_ub then
 
-16: problems.append((prob\_lb, subprob\_i))
+16: problems.append((prob_lb, subprob_i))
 
 17: end if
 
 18: end for
 
-19: global\_lb ← min{lb | (lb, prob) ∈ probs}
+19: global_lb ← min{lb | (lb, prob) ∈ probs}
 
 20: end while
 
-21: return global\_ub
+21: return global_ub
 
 22: end function
 
@@ -86,19 +78,19 @@ These procedures estimate respectively upper bounds (prob\_ub) and lower bounds 
 
 * How to optimize and find the global minimum is demonstrated by the Branch & Bound Algorithm. The method can be made simpler if we just care about the satisfiability problem, in which case we can start the global upper bound at 0 as given in line 2. Line 15 will remove any sub-problem that has a lower bound greater than 0 and is hence ineligible to include a counterexample.
 
-- Therefore, without altering the algorithm, the computation of the lower bound can be substituted with the feasibility problem (or its relaxation) imposing the constraint that the result is less than zero. There may still be a counterexample if it is feasible, in which case more branching is required else the sub-problem can be pruned out. 
+- Therefore, without altering the algorithm, the computation of the lower bound can be substituted with the feasibility problem (or its relaxation) imposing the constraint that the result is less than zero. There may still be a counterexample if it is feasible, in which case more branching is required else the sub-problem can be pruned out.
 
 * Furthermore, In line 11 the process can be terminated if any upper bound improving on 0 is discovered on a sub-problem, as this already suggests the existence of a counterexample.
 
 - Both the pseudocode of Algorithm 1 and the description of the verification problem as optimization are generalized and would apply to verification problems other than the particular situation of PL-NN. A practical algorithm requires the specification of multiple elements like the search strategy, branching rule and Bounding methods.
 
-* A **search strategy** that selects the subsequent issue to branch on based on the pick\_out function given in the algorithm. There are various heuristics available, such as those that rely on the outcomes of preceding bound computations. This enables us to find appropriate upper bounds for satisfiable issues or optimization problems, allowing for early pruning. 
+* A **search strategy** that selects the subsequent issue to branch on based on the pick_out function given in the algorithm. There are various heuristics available, such as those that rely on the outcomes of preceding bound computations. This enables us to find appropriate upper bounds for satisfiable issues or optimization problems, allowing for early pruning.
 
-- A **branching rule** represented by the split function divides a problem (prob) into subproblems so that S i subprob\_i = prob and (subprob\_i ∩ subprob\_j) = ∅, ∀i 6= j. This will ascertain the characteristics of the (sub-)problems, hence influencing the computational bounds' hardness. Furthermore, the quality of the generated bounds can be significantly affected by selecting the appropriate partition. 
+- A **branching rule** represented by the split function divides a problem (prob) into subproblems so that S i subprob_i = prob and (subprob_i ∩ subprob_j) = ∅, ∀i 6= j. This will ascertain the characteristics of the (sub-)problems, hence influencing the computational bounds' hardness. Furthermore, the quality of the generated bounds can be significantly affected by selecting the appropriate partition.
 
-* The **Bounding methods** are defined by compute\_{UB, LB} functions. For a given (sub-)problem, these methods estimate upper bounds (prob\_ub) and lower bounds (prob\_ub) over the minimum output that the network net can reach. 
+* The **Bounding methods** are defined by compute\_{UB, LB} functions. For a given (sub-)problem, these methods estimate upper bounds (prob_ub) and lower bounds (prob_ub) over the minimum output that the network net can reach.
 
-- In order to facilitate the pruning of this (sub-)problem, we want to maximize the lower bound. Usually, convex relaxations of the (sub-)problem are introduced, and then they are minimized. 
+- In order to facilitate the pruning of this (sub-)problem, we want to maximize the lower bound. Usually, convex relaxations of the (sub-)problem are introduced, and then they are minimized.
 
 * Conversely, the estimated upper bound ought to be as small as feasible to enable the pruning of additional (sub-)problems or the identification of counterexamples. Heuristic approaches suffice since any viable point corresponds to an upper bound on the minimum.
 
@@ -110,7 +102,7 @@ These procedures estimate respectively upper bounds (prob\_ub) and lower bounds 
 
 - Reluplex and Planet depend on SMT Solvers
 
-**SMT Based methods:** 
+**SMT Based methods:**
 
 - Reluplex (Reluplex -> ReLU + Simplex Algorithm) - SMT Solver uses the splitting-on-demand framework
 
@@ -132,59 +124,59 @@ Consider a concrete example also known as the toy example. The constraints are a
 
 ![](https://lh7-us.googleusercontent.com/-dC0CvoMttdpEL44M6_WixczaTosrt3XX2UjlaT7cHJpbs6ihHC83Tg7AnnrcMcNm0vdAJM5q73ialJjtK02tn2Qk9gV2K2I7XvewhJU-UvZn_arXcbBIMH14z7xWHwmfgkeyhsIUnSdePXPogTDEtc)
 
-Let's start by assigning values to the variables. 
+Let's start by assigning values to the variables.
 
 Iteration 1, We initialize all the variables to 0.
 
-|    |    |      |       |      |       |   |
-| -- | -- | ---- | ----- | ---- | ----- | - |
-| x1 | x2 | a in | a out | b in | b out | y |
-| 0  | 0  | 0    | 0     | 0    | 0     | 0 |
+|     |     |      |       |      |       |     |
+| --- | --- | ---- | ----- | ---- | ----- | --- |
+| x1  | x2  | a in | a out | b in | b out | y   |
+| 0   | 0   | 0    | 0     | 0    | 0     | 0   |
 
 This will violate the linear constraint y<=-5 .
 
 Hence in Iteration 2 we assign the value to y.
 
-|    |    |      |       |      |       |    |
-| -- | -- | ---- | ----- | ---- | ----- | -- |
-| x1 | x2 | a in | a out | b in | b out | y  |
-| 0  | 0  | 0    | 0     | 0    | 0     | -5 |
+|     |     |      |       |      |       |     |
+| --- | --- | ---- | ----- | ---- | ----- | --- |
+| x1  | x2  | a in | a out | b in | b out | y   |
+| 0   | 0   | 0    | 0     | 0    | 0     | -5  |
 
 This assignment violates the linear constraint y = -aout -b out, hence needs to be fixed.
 
 Iteration 3:
 
-|    |    |      |       |      |       |    |
-| -- | -- | ---- | ----- | ---- | ----- | -- |
-| x1 | x2 | a in | a out | b in | b out | y  |
-| 0  | 0  | 0    | 1     | 0    | 4     | -5 |
+|     |     |      |       |      |       |     |
+| --- | --- | ---- | ----- | ---- | ----- | --- |
+| x1  | x2  | a in | a out | b in | b out | y   |
+| 0   | 0   | 0    | 1     | 0    | 4     | -5  |
 
 Now the relu constraints are violated and need to be fixed .
 
 Hence in Iteration 4  we make b in == b out :
 
-|    |    |      |       |      |       |    |
-| -- | -- | ---- | ----- | ---- | ----- | -- |
-| x1 | x2 | a in | a out | b in | b out | y  |
-| 0  | 0  | 0    | 1     | 4    | 4     | -5 |
+|     |     |      |       |      |       |     |
+| --- | --- | ---- | ----- | ---- | ----- | --- |
+| x1  | x2  | a in | a out | b in | b out | y   |
+| 0   | 0   | 0    | 1     | 4    | 4     | -5  |
 
 At this point both relu constraint as well the linear constraint is violated but the linear constraint b in = -x1 - x2 gets prioritized .
 
 Hence the 5th iteration becomes as follows:
 
-|    |    |      |       |      |       |    |
-| -- | -- | ---- | ----- | ---- | ----- | -- |
-| x1 | x2 | a in | a out | b in | b out | y  |
-| -2 | -2 | 0    | 1     | 4    | 4     | -5 |
+|     |     |      |       |      |       |     |
+| --- | --- | ---- | ----- | ---- | ----- | --- |
+| x1  | x2  | a in | a out | b in | b out | y   |
+| -2  | -2  | 0    | 1     | 4    | 4     | -5  |
 
 The values for x1,x2 are assigned by calculating it from the above-mentioned linearity.
 
 Iteration 6 : We assign a value to the a in from the linearity a in = x1 + x2
 
-|    |    |      |       |      |       |    |
-| -- | -- | ---- | ----- | ---- | ----- | -- |
-| x1 | x2 | a in | a out | b in | b out | y  |
-| -2 | -2 | 4    | 1     | 4    | 4     | -5 |
+|     |     |      |       |      |       |     |
+| --- | --- | ---- | ----- | ---- | ----- | --- |
+| x1  | x2  | a in | a out | b in | b out | y   |
+| -2  | -2  | 4    | 1     | 4    | 4     | -5  |
 
 Iteration 7 : Now at this point , relu constraint is violated and hence we need a feasible assignment to aout but we have worked on the same linear piece repeatedly without any progress. This is when we know that we need to divide the problem into subproblems and hence branching occurs based on the possible values from relu. a out can be a out <= 0 or a out <= a in. In Cases where no violated constraints exist , it means that the satisfiable assignment has been found and the algorithm terminates early since we found a counter example and hence the property is false and has no optimal solution.
 
@@ -192,37 +184,37 @@ Iteration 7 : Now at this point , relu constraint is violated and hence we need 
 
 Iteration 8 :This is where the planet comes into picture to build the linear approximations for the network. Below are the updated constraints as a part of the planet's network approximations. In planet the search strategy simply iterates over all the subproblems that havent been pruned and tries to find a complete assignment.![](https://lh7-us.googleusercontent.com/GmaFREqdM8-3O-PkQ1j_26vD75UOgXC5LLpIGXEcBIoyNSlRiSwrQ-i2JwPJnRmTHTKOz7mxYCCauVBNOpAKVq9tSmWi_VFb84rCeY5iMCsFYIpNG4lC5VmZVfcohvsqH3hhXP2WsKX0jaCD553Typ0)
 
-Iteration 9: From iteration 7, we understood that a out can have two possible feasible solutions, 
+Iteration 9: From iteration 7, we understood that a out can have two possible feasible solutions,
 
 Case 1 : When a out =0 , b out can have 2 possible values namely b out ! = 0 and b out = 0 but both these values are not feasible since it violates the linear constraints y = -a out - b out and y<= -5 on substitution. Hence we can prune this branch.
 
-|    |    |      |       |      |          |    |
-| -- | -- | ---- | ----- | ---- | -------- | -- |
-| x1 | x2 | a in | a out | b in | b out    | y  |
-| -2 | -2 | 4    | 0     | 4    | b in = 4 | -5 |
-|    |    |      |       |      | 0        |    |
+|     |     |      |       |      |          |     |
+| --- | --- | ---- | ----- | ---- | -------- | --- |
+| x1  | x2  | a in | a out | b in | b out    | y   |
+| -2  | -2  | 4    | 0     | 4    | b in = 4 | -5  |
+|     |     |      |       |      | 0        |     |
 
 Case 2 : When a out = a in ,
 
-We have 2 possible branches here, b out =0 and b out = b in. Lets start with : 
+We have 2 possible branches here, b out =0 and b out = b in. Lets start with :
 
 1. b out = 0 for the constraints mentioned about. Is there a feasible solution ? No.
 
-|    |    |      |       |      |       |    |
-| -- | -- | ---- | ----- | ---- | ----- | -- |
-| x1 | x2 | a in | a out | b in | b out | y  |
-| -2 | -2 | 4    | 4     | 4    | 0     | -5 |
+|     |     |      |       |      |       |     |
+| --- | --- | ---- | ----- | ---- | ----- | --- |
+| x1  | x2  | a in | a out | b in | b out | y   |
+| -2  | -2  | 4    | 4     | 4    | 0     | -5  |
 
-This violates the linear constraint y = -a out - b out => y <= -5 . -4 is not less than -5, Hence this is not a valid assignment 
+This violates the linear constraint y = -a out - b out => y <= -5 . -4 is not less than -5, Hence this is not a valid assignment
 
-2.  b out ! = 0. This path has an assignment for the variables. But it violates the relu constraint as well as the linear constraint hence it is not feasible as well.
+2.  b out ! = 0. This path has an assignment for the variables. But it violates the relu constraint as well as the linear constraint hence it is not feasible as well.
 
-|    |    |      |       |      |       |    |
-| -- | -- | ---- | ----- | ---- | ----- | -- |
-| x1 | x2 | a in | a out | b in | b out | y  |
-| -2 | -2 | 4    | 4     | 4    | 2     | -5 |
+|     |     |      |       |      |       |     |
+| --- | --- | ---- | ----- | ---- | ----- | --- |
+| x1  | x2  | a in | a out | b in | b out | y   |
+| -2  | -2  | 4    | 4     | 4    | 2     | -5  |
 
-This tells us that we cannot find a feasible assignment and hence no counter example can exist. In other terms, the property holds. 
+This tells us that we cannot find a feasible assignment and hence no counter example can exist. In other terms, the property holds.
 
 ![](https://lh7-us.googleusercontent.com/RgbwKD7OTlZx0WwsYnfD8SGdzZZhrRXVlhBq72Wuwq5NCfCIlEQ1DbW5syLl05ZUdBWRp318iXGYLHREMdipltflWPfajGBWha36zUHegOrCuMe3D_I-E-PEn5_cht28JQHjMJbHqAGMTbZ9RBgwwR8)
 
@@ -276,7 +268,7 @@ _Figure 1_
 
 The performance of large networks are also evaluated:
 
-1. Reduced Robust MNIST Network 
+1. Reduced Robust MNIST Network
 
 2. Robust MNIST Network
 
@@ -288,7 +280,7 @@ The performance of large networks are also evaluated:
 
 - In this context, robustness involves evaluating whether the predicted label for each input image changes when the image is perturbed within a specific ε-infinity norm ball. This disturbances assesses how resilient the network's predictions are to slight variations in the input images
 
-- In order to know the computation there is a time limit of 1 hr for both the MNIST networks. 
+- In order to know the computation there is a time limit of 1 hr for both the MNIST networks.
 
 **Reduced Robust MNIST Network**
 
@@ -370,7 +362,7 @@ within a given optimization problem
 
 the largest extent (i.e., the longest edge) and creating two subdomains based on this
 
-  dimension
+dimension
 
 - **imb:** Stands for intermediate bounds, which are estimates of the lower and upper
 
@@ -386,7 +378,7 @@ computations, particularly in situations where exact calculations are computatio
 
 expensive or infeasible
 
-- The fundamental baseline that the paper addresses is **BlackBox**, which is simply the constraints encoded directly into the Gurobi solver. This solution will perform its own relaxation, regardless of the problem's complexity. 
+- The fundamental baseline that the paper addresses is **BlackBox**, which is simply the constraints encoded directly into the Gurobi solver. This solution will perform its own relaxation, regardless of the problem's complexity.
 
 - The paper utilizes the publicly accessible versions of Reluplex and Planet, C++ is used to implement both the algorithms
 
