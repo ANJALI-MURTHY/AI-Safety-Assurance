@@ -1,16 +1,9 @@
 ## TEAM : NEUROCOP
 
-Group Members:
-Anjali Maddila - G01381846
-
-Kavya Tolety - G01378070 
-
-Anjali Jayadeva Murthy - G01373209
-
 ## 1. Complete run show how you run your program AND the its complete outputs.
 
 We executed the code using Anaconda. To start off we open Anaconda and launch Jupyter Notebook. This can also be run via terminal by the command: python se.py
-We then install Z3 using the command: pip3 install z3-solver. 
+We then install Z3 using the command: pip3 install z3-solver.
 
 ## Part 1 Outputs
 
@@ -3098,10 +3091,10 @@ Time taken to execute 0.3066377639770508
 
 PART-1:
 
-We initially define the reLU function and a neural network and initialize its architecture with random weights and biases. We next used Z3 library and NumPy library for creating symbolic variables & random number generation. The architecture is a list that specifies number of neurons in each layer of the NN. This variable is given as input to the 'initialize_network' function. It iterates through the layers and neurons in each layer, initializing random weights and biases for each neuron. The symbolic input variables i0 & i1 are printed as "Input layer." The code then loops through the layers of the neural network and prints information about each neuron, including its symbolic variable, weights, bias, and activation function indicator. We then create a random NN and that is passed into our symbolic execution function. Here we are just applying the ReLU and doing the weight calculations on the NN. 
+We initially define the reLU function and a neural network and initialize its architecture with random weights and biases. We next used Z3 library and NumPy library for creating symbolic variables & random number generation. The architecture is a list that specifies number of neurons in each layer of the NN. This variable is given as input to the 'initialize_network' function. It iterates through the layers and neurons in each layer, initializing random weights and biases for each neuron. The symbolic input variables i0 & i1 are printed as "Input layer." The code then loops through the layers of the neural network and prints information about each neuron, including its symbolic variable, weights, bias, and activation function indicator. We then create a random NN and that is passed into our symbolic execution function. Here we are just applying the ReLU and doing the weight calculations on the NN.
 
 We then checked if the states given by symbolic execution function are valid or not. It measures the time it takes to solve the symbolic execution problem and asserts that the result is a valid symbolic expression using Z3. The result of the symbolic execution is stored in the variable states, and the solving time is printed. After that we plotted a scalability graph.
- 
+
 PART-2:
 
 
@@ -3118,19 +3111,19 @@ We plotted a scalability graph using Matplotlib illustrating the relation betwee
 ![Image%2010-31-23%20at%205.31%20PM.jpeg](attachment:Image%2010-31-23%20at%205.31%20PM.jpeg)
 
 PART-2:
-    
-    
-    
-![Image%2010-31-23%20at%205.31%20PM.jpeg](attachment:Image%2010-31-23%20at%205.31%20PM.jpeg)    
-    
 
-## iii. What do you think the most difficult part of this assignment? 
+
+
+![Image%2010-31-23%20at%205.31%20PM.jpeg](attachment:Image%2010-31-23%20at%205.31%20PM.jpeg)
+
+
+## iii. What do you think the most difficult part of this assignment?
 
 We felt the most difficult part of the assignment was to implement the function (my_interval_execution) for the abstract domain that propagate the input of the network through the layers to obtain a list of output intervals (Part 2 of the assignment).
 
 
 ## iv. What advice do you give other students?
 
-It is extremely important to draw the DNN by hand & calculate every layer's abstract values before coding the required functions. We were having difficulties in updating the relevant dictionary based on layer type, so you must be well-versed with Python. 
+It is extremely important to draw the DNN by hand & calculate every layer's abstract values before coding the required functions. We were having difficulties in updating the relevant dictionary based on layer type, so you must be well-versed with Python.
 
 

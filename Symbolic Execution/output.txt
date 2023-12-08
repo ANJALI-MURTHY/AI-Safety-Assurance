@@ -1,0 +1,260 @@
+TEAM : NEUROCOP
+
+1. Complete run show how you run your program AND then its complete outputs.
+
+We executed the code using Anaconda. Initially we opened Anaconda and selected launch Jupyter Notebook. We then installed Z3 using the command: pip3 install z3-solver. 
+
+Our program starts with importing the Z3 library and defining our activation function. We then created a 2X22X2 DNN (2 hidden layer Neural Network). Next printed the inputs that we gave to the DNN and the output is as follows:
+[[(n0_0, [1.0, -1.0], 0, True), (n0_1, [1.0, 1.0], 0.0, True)], [(n1_0, [0.5, -0.2], 0.0, True), (n1_1, [-0.5, 0.1], 0.0, True)], [(o0, [1.0, -1.0], 0.0, False), (o1, [-1.0, 1.0], 0.0, False)]]
+
+After that we created a function that helps in creating an array of neuron input values. The output we got here is as follows:
+[[i0, i1], [n0_0, n0_1], [n1_0, n1_1], [o0, o1]]
+
+
+We then called our important function which is the symbolic states function and printed the symbolic states using the main function. The output is as follows:
+And(n0_0 == If(0 + i0*1 + i1*-1 <= 0, 0, 0 + i0*1 + i1*-1),
+    n0_1 == If(0 + i0*1 + i1*1 <= 0, 0, 0 + i0*1 + i1*1),
+    n1_0 ==
+    If(0 + n0_0*1/2 + n0_1*-1/5 <= 0,
+       0,
+       0 + n0_0*1/2 + n0_1*-1/5),
+    n1_1 ==
+    If(0 + n0_0*-1/2 + n0_1*1/10 <= 0,
+       0,
+       0 + n0_0*-1/2 + n0_1*1/10),
+    o0 == 0 + n1_0*1 + n1_1*-1,
+    o1 == 0 + n1_0*-1 + n1_1*1)
+[i1 = 4,
+ n0_0 = 2,
+ n1_1 = 0,
+ i0 = 6,
+ n0_1 = 10,
+ o1 = 0,
+ n1_0 = 0,
+ o0 = 0]
+
+Next simulated a concrete example and its output is as follows:
+[n1_1 = 0,
+ i0 = 1,
+ n0_1 = 0,
+ o1 = -1,
+ o0 = 1,
+ n0_0 = 2,
+ i1 = -1,
+ n1_0 = 1]
+
+We then proceeded with checking the assertions. The outputs for the assertions are as follows: 
+Assertion-1: TRUE
+Prove that if (n0_0 > 0.0 and n0_1 <= 0.0) then o0 > o1
+Implies(And(n0_0 > 0, n0_1 <= 0), o0 > o1)
+proved
+Assertion-2: TRUE
+Prove that when (i0 - i1 > 0 and i0 + i1 <= 0), then o0 > o1
+Implies(And(i0 - i1 > 0, i0 + i1 <= 0), o0 > o1)
+proved
+Assertion-3:  FALSE
+Disprove that when i0 - i1 >0, then o0 > o1
+Implies(i0 - i1 > 0, o0 > o1)
+counterexample
+[n1_1 = 0,
+ i0 = 6,
+ n0_1 = 10,
+ o1 = 0,
+ i1 = 4,
+ n1_0 = 0,
+ o0 = 0,
+ n0_0 = 2]
+
+After proving it till here, we proceeded with checking if our code worked for our another example of a 2X2X2X2X2 DNN. The output from the DNN we got is as follows:
+[[(n0_0, [1.0, -1.0], 0, True), (n0_1, [1.0, 1.0], 0.0, True)], [(n1_0, [0.5, -0.2], 0.0, True), (n1_1, [-0.5, 0.1], 0.0, True)], [(n2_0, [1, 1], 0.0, True), (n2_1, [1, 1], 0.0, True)], [(o0, [1.0, -1.0], 0.0, False), (o1, [-1.0, 1.0], 0.0, False)]]
+
+We called the symbolic execution for this DNN and got the output as follows:
+And(n0_0 == If(0 + i0*1 + i1*-1 <= 0, 0, 0 + i0*1 + i1*-1),
+    n0_1 == If(0 + i0*1 + i1*1 <= 0, 0, 0 + i0*1 + i1*1),
+    n1_0 ==
+    If(0 + n0_0*1/2 + n0_1*-1/5 <= 0,
+       0,
+       0 + n0_0*1/2 + n0_1*-1/5),
+    n1_1 ==
+    If(0 + n0_0*-1/2 + n0_1*1/10 <= 0,
+       0,
+       0 + n0_0*-1/2 + n0_1*1/10),
+    n2_0 ==
+    If(0 + n1_0*1 + n1_1*1 <= 0, 0, 0 + n1_0*1 + n1_1*1),
+    n2_1 ==
+    If(0 + n1_0*1 + n1_1*1 <= 0, 0, 0 + n1_0*1 + n1_1*1),
+    o0 == 0 + n2_0*1 + n2_1*-1,
+    o1 == 0 + n2_0*-1 + n2_1*1)
+[n1_0 = 0,
+ o0 = 0,
+ i0 = 4,
+ n0_1 = 15/2,
+ n2_0 = 1/2,
+ o1 = 0,
+ n0_0 = 1/2,
+ i1 = 7/2,
+ n2_1 = 1/2,
+ n1_1 = 1/2]
+
+Generated a concrete example for this DNN and got the following:
+[n2_1 = 1,
+ i1 = -1,
+ n1_1 = 0,
+ n1_0 = 1,
+ i0 = 1,
+ n0_0 = 2,
+ n2_0 = 1,
+ n0_1 = 0,
+ o1 = 0,
+ o0 = 0]
+
+We also tried an assertion example for this and it gave us a counter example.
+Prove that if (n0_0 > 0.0 and n0_1 <= 0.0) then o0 > o1
+Implies(And(n0_0 > 0, n0_1 <= 0), o0 > o1)
+counterexample
+[n2_0 = 1/4,
+ i0 = 1/8,
+ n0_0 = 1/2,
+ i1 = -3/8,
+ n2_1 = 1/4,
+ n1_0 = 1/4,
+ o1 = 0,
+ n1_1 = 0,
+ n0_1 = 0,
+ o0 = 0]
+
+
+Our another test condition was to test it on a 2x4x4x4x2 DNN. We created a DNN for this and the output is:
+[[(n0_0, [1.0, -1.0], 1, True), (n0_1, [1.0, 1.0], 1, True), (n0_2, [1, 1], 1, True), (n0_3, [1, 1], 1, True)], [(n1_0, [0.5, -0.2], 1, True), (n1_1, [-0.5, 0.1], 1, True), (n1_2, [1, 1], 0.0, True), (n1_3, [1, 1], 1, True)], [(n2_0, [1, 1], 1, True), (n2_1, [1, 1], 1, True), (n2_2, [1, 1], 1, True), (n2_3, [1, 1], 1, True)], [(o0, [1.0, -1.0], 0.0, False), (o1, [-1.0, 1.0], 0.0, False)]]
+
+Next called our symbolic execution and main function to generate the symbolic states one this DNN. The output is as follows:
+0 + i0*1 + i1*-1 + 1
+0 + i0*1 + i1*1 + 1
+0 + i0*1 + i1*1 + 1
+0 + i0*1 + i1*1 + 1
+0 + n0_0*1/2 + n0_1*-1/5 + 1
+0 + n0_0*-1/2 + n0_1*1/10 + 1
+0 + n0_0*1 + n0_1*1 + 1
+0 + n1_0*1 + n1_1*1 + 1
+0 + n1_0*1 + n1_1*1 + 1
+0 + n1_0*1 + n1_1*1 + 1
+0 + n1_0*1 + n1_1*1 + 1
+And(n0_0 ==
+    If(0 + i0*1 + i1*-1 + 1 <= 0, 0, 0 + i0*1 + i1*-1 + 1),
+    n0_1 ==
+    If(0 + i0*1 + i1*1 + 1 <= 0, 0, 0 + i0*1 + i1*1 + 1),
+    n0_2 ==
+    If(0 + i0*1 + i1*1 + 1 <= 0, 0, 0 + i0*1 + i1*1 + 1),
+    n0_3 ==
+    If(0 + i0*1 + i1*1 + 1 <= 0, 0, 0 + i0*1 + i1*1 + 1),
+    n1_0 ==
+    If(0 + n0_0*1/2 + n0_1*-1/5 + 1 <= 0,
+       0,
+       0 + n0_0*1/2 + n0_1*-1/5 + 1),
+    n1_1 ==
+    If(0 + n0_0*-1/2 + n0_1*1/10 + 1 <= 0,
+       0,
+       0 + n0_0*-1/2 + n0_1*1/10 + 1),
+    n1_2 ==
+    If(0 + n0_0*1 + n0_1*1 <= 0, 0, 0 + n0_0*1 + n0_1*1),
+    n1_3 ==
+    If(0 + n0_0*1 + n0_1*1 + 1 <= 0,
+       0,
+       0 + n0_0*1 + n0_1*1 + 1),
+    n2_0 ==
+    If(0 + n1_0*1 + n1_1*1 + 1 <= 0,
+       0,
+       0 + n1_0*1 + n1_1*1 + 1),
+    n2_1 ==
+    If(0 + n1_0*1 + n1_1*1 + 1 <= 0,
+       0,
+       0 + n1_0*1 + n1_1*1 + 1),
+    n2_2 ==
+    If(0 + n1_0*1 + n1_1*1 + 1 <= 0,
+       0,
+       0 + n1_0*1 + n1_1*1 + 1),
+    n2_3 ==
+    If(0 + n1_0*1 + n1_1*1 + 1 <= 0,
+       0,
+       0 + n1_0*1 + n1_1*1 + 1),
+    o0 == 0 + n2_0*1 + n2_1*-1,
+    o1 == 0 + n2_0*-1 + n2_1*1)
+[i0 = -1/14,
+ o0 = 0,
+ n2_2 = 167/56,
+ n1_2 = 13/7,
+ n2_3 = 167/56,
+ n0_0 = 47/28,
+ o1 = 0,
+ n0_2 = 5/28,
+ n1_0 = 101/56,
+ i1 = -3/4,
+ n0_3 = 5/28,
+ n1_1 = 5/28,
+ n2_0 = 167/56,
+ n2_1 = 167/56,
+ n0_1 = 5/28,
+ n1_3 = 20/7]
+
+We also generated assertions for this DNN.The outputs of the assertions are as follows:
+Assertion-1: TRUE
+Prove that if (n0_0 > 0.0 and n0_1 < 0.0) then o0 > o1
+Implies(And(n0_0 > 0, n0_1 < 0), o0 > o1)
+proved
+
+Assertion-2: FALSE
+Prove that when (i0 - i1 > 0 and i0 + i1 <= 0), then o0 > o1
+Implies(And(i0 - i1 > 0, i0 + i1 <= 0), o0 > o1)
+counterexample
+[o1 = 0,
+ i0 = -1/14,
+ n2_2 = 167/56,
+ n1_2 = 13/7,
+ o0 = 0,
+ n2_3 = 167/56,
+ n0_0 = 47/28,
+ n1_0 = 101/56,
+ n0_2 = 5/28,
+ i1 = -3/4,
+ n0_3 = 5/28,
+ n2_1 = 167/56,
+ n1_1 = 5/28,
+ n2_0 = 167/56,
+ n0_1 = 5/28,
+ n1_3 = 20/7]
+
+Assertion-3: TRUE
+Prove that when i0 == 1.0, i1 == -1.0, then o0 is equal to o1
+Implies(And(i0 == 1, i1 == -1), o0 == o1)
+proved
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2.
+i. Briefly describe your SE algorithm?
+A.
+
+The function my_symbolic_execution() performs symbolic execution on the neural network. Symbolic execution explores all the possible paths and behaviors of the system symbolically without executing it initially.
+
+Initialization: It takes two parameters as input which are ‘input_var’ and ‘dnn’. 
+Here the variable ‘input_vars’ means a list of symbolic variables representing the input to the neural network and dnn represents the Neural Network for which we perform the symbolic execution.
+We begin with initializing an empty list called ‘weighted_sum’ to store the weighted sums encountered during the execution of the program.  Next, we call the create_neuron function with dnn and input_var as arguments. We assign this to the neuron variable using the assignment operator. We then create an empty list called ‘res’ which is used to store the results of comparisons between neurons and computed values. 
+
+Neuron Processing: Next, we traverse layer by layer with the inputs using the first for loop and weights along with the bias using another for loop. The code then calculates the weighted sum of inputs for each layer by considering the current_vars (symbolic states) and the weight associated with each neuron. If bias is zero we ignore the bias but if it is a non-zero number then we add the bias to this weighted sum computation. 
+
+Activation Function: We then apply the activation function to the computed weighted sum (w_sum) if the value of the boolean variable ‘r’ is true. neuron == w_sum tells about the symbolic relationship between the input and output of the neuron and corresponding symbolic variable neuron. It will append this symbolic relationship to the ‘res’ list. 
+
+After executing both the for loops, the algorithm returns the result of a logical AND operation applied to all comparisons stored in the ‘res’ list. We perform that by using the Z3 solver for symbolic reasoning in the return statement.
+
+
+ii. What do you think is the most difficult part of this assignment?
+
+We felt the most difficult part of the assignment was to complete & implement the symbolic execution function on general DNNs. The Z3 documentation & online resources are less, so we also spent a copious amount of time trying to understand its implementation. We were initially confused about how to create a Function that helps in creating an array of neuron input values and because of this we could not solve the symbolic states in the correct representation. 
+
+
+iii. What advice do you give other students?
+
+It is extremely important to have some basic knowledge on Propositional Logics, Python Programming language, particularly on Z3 Solvers, & the representation of a Deep Neural Network along with its working. We also suggest you to solve a few problems on the z3 solver and similarly understand what the symbolic execution is and how it works. To complete this assignment successfully, combine the concepts of Z3 & DNN and learn how to write the symbolic execution that is general to all DNN inputs.
